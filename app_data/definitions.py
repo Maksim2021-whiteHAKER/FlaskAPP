@@ -1,1 +1,1 @@
-temporary_token = '123456789'
+temporary_token = '8888'
