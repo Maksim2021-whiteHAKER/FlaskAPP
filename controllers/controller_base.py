@@ -1,4 +1,4 @@
-from flask_restful import Resource, reqparse
+from flask_restful import Resource, reqparse, abort
 from classes.errors import APIError, ERROR
 from app_data.definitions import temporary_token
 
@@ -9,11 +9,11 @@ class ControllerBase(Resource):
     def __init__(self, *args, **kwargs):
         try:
             args = ControllerBase.parser.parse_args()
-            self.abort_if_autorization_error(args['authorization'])
+            self.abort_if_authorization_error(args['authorization'])
 
         except Exception as e:
             abort(401, error = 1, message = APIError.err(ERROR.UNAUTHORIZED), data=None)
-            
+
     # проверка токена
     def abort_if_authorization_error(self, auth: str):
         if not auth:
