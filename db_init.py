@@ -1,12 +1,16 @@
 from models.User import User
 from models.State import AquaState
-from app_data.definitions import mysql_connect
+#from app_data.definitions import my_connect
 from app_data.definitions import Base
 from sqlalchemy.orm import Session
+from sqlalchemy import create_engine
 
-Base.metadata.create_all(bind=mysql_connect)
 
-with Session(autoflush=False, bind=mysql_connect) as db:
+connection_str = "mysql+pymysql://user:password+@localhost/aqua_db"
+my_connect = create_engine(connection_str)
+Base.metadata.create_all(bind=my_connect)
+
+with Session(autoflush=False, bind=my_connect) as db:
     # создаем объект Person для добавления в бд
     user = User(
         surname = 'Ivanov',
@@ -15,7 +19,7 @@ with Session(autoflush=False, bind=mysql_connect) as db:
         phone = '89121234567',
         email = 'ivanov@mail.ru',
         password = '123',
-        token_hash =  None,
+        hash_token =  None,
         token_created = None )
     db.add(user)     # добавляем в бд
 
